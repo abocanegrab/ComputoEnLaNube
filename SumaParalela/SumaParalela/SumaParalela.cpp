@@ -1,8 +1,8 @@
 ﻿#include <iostream>
 #include <omp.h>
 #include <iomanip>
-
-using namespace std;
+#include <ctime>
+#include <cstdlib>
 
 const int ARRAY_SIZE = 1000;
 
@@ -16,17 +16,18 @@ void imprimirArreglo(const char* nombre, int arr[]) {
     int inicio1 = 0;
     int fin1 = 9;
 
+    std::cout << std::setw(5) << nombre << ":";
     for (int i = inicio1; i <= fin1 && i < ARRAY_SIZE; i++) {
-        cout << setw(5) << arr[i] << " ";
+        std::cout << std::setw(5) << arr[i] << " ";
     }
-    cout << " ... ";
+    std::cout << " ... ";
 
     int inicio2 = ARRAY_SIZE - 10;
     int fin2 = ARRAY_SIZE - 1;
     for (int i = inicio2; i <= fin2 && i < ARRAY_SIZE; i++) {
-        cout << setw(5) << arr[i] << " ";
+        std::cout << std::setw(5) << arr[i] << " ";
     }
-    cout << endl;
+    std::cout << std::endl;
 }
 
 void sumaParalela(int A[], int B[], int R[], int size) {
@@ -46,17 +47,21 @@ int main() {
     inicializarArreglo(A, ARRAY_SIZE, 1, 100);
     inicializarArreglo(B, ARRAY_SIZE, 1, 100);
     
-    cout << "Array generado" << endl;
-    cout << "Tamano de arreglos: " << ARRAY_SIZE << endl;
+    std::cout << "Array generado" << std::endl;
+    std::cout << "Tamano de arreglos: " << ARRAY_SIZE << std::endl;
     imprimirArreglo("A", A);
     imprimirArreglo("B", B);
     
-    cout << "Procesadores disponibles: " << omp_get_num_procs() << endl;
+    std::cout << "Procesadores disponibles: " << omp_get_num_procs() << std::endl;
 
     sumaParalela(A, B, R_paralelo, ARRAY_SIZE);
 
-    cout << "Resultados de suma:" << endl;
+    std::cout << "Resultados de suma:" << std::endl;
     imprimirArreglo("A", A);
     imprimirArreglo("B", B);
     imprimirArreglo("R", R_paralelo);
+
+    delete[] A;
+    delete[] B;
+    delete[] R_paralelo;
 }
